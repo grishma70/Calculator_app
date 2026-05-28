@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Calculator</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: #f0f9ff;
+      font-family: sans-serif;
+    }
+
+    .calc {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      width: 260px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    #display {
+      width: 100%;
+      text-align: right;
+      font-size: 32px;
+      border: none;
+      border-bottom: 2px solid #e0f2fe;
+      padding: 8px 4px;
+      margin-bottom: 16px;
+      outline: none;
+      color: #0f172a;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    button {
+      padding: 16px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      background: #f0f9ff;
+      color: #0f172a;
+    }
+
+    button:hover { background: #bae6fd; }
+
+    .op  { background: #e0f2fe; color: #0284c7; }
+    .eq  { background: #0ea5e9; color: white; grid-column: span 2; }
+    .eq:hover { background: #0284c7; }
+  </style>
+</head>
+<body>
+
+<div class="calc">
+  <input id="display" readonly value="0" />
+  <div class="buttons">
+    <button onclick="d('7')">7</button>
+    <button onclick="d('8')">8</button>
+    <button onclick="d('9')">9</button>
+    <button class="op" onclick="d('/')">÷</button>
+
+    <button onclick="d('4')">4</button>
+    <button onclick="d('5')">5</button>
+    <button onclick="d('6')">6</button>
+    <button class="op" onclick="d('*')">×</button>
+
+    <button onclick="d('1')">1</button>
+    <button onclick="d('2')">2</button>
+    <button onclick="d('3')">3</button>
+    <button class="op" onclick="d('-')">−</button>
+
+    <button onclick="d('0')">0</button>
+    <button onclick="d('.')">.</button>
+    <button class="op" onclick="d('+')">+</button>
+    <button onclick="clr()">C</button>
+
+    <button class="eq" onclick="calc()">=</button>
+    <button onclick="del()">⌫</button>
+  </div>
+</div>
+
+<script>
+  const disp = document.getElementById('display');
+  let fresh = true;
+
+  function d(v) {
+    if (fresh) { disp.value = v; fresh = false; }
+    else disp.value += v;
+  }
+
+  function calc() {
+    try {
+      disp.value = Function('"use strict"; return (' + disp.value + ')')();
+    } catch { disp.value = 'Error'; }
+    fresh = true;
+  }
+
+  function clr() { disp.value = '0'; fresh = true; }
+  function del() { disp.value = disp.value.slice(0,-1) || '0'; }
+</script>
+
+</body>
+</html>
